@@ -1,10 +1,10 @@
 version: "3.1"
 services:
     db:
-        image: mysql
+        image: mysql:8.0
         ports: 
             - "3306:3306"
-        command: --default-authentication-plugin=mysql_native_password
+        #command: --default-authentication-plugin=mysql_native_password
         environment:
             MYSQL_DATABASE: dbname
             MYSQL_PASSWORD: test
@@ -27,13 +27,14 @@ services:
             - default
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
-        links: 
+        links:
             - db:db
         ports:
             - 8000:80
         environment:
-            MYSQL_USER: root
-            MYSQL_PASSWORD: test
-            MYSQL_ROOT_PASSWORD: test 
+            PMA_HOST: db
+            MYSQL_ROOT_PASSWORD: test
+        depends_on:
+            - db
 volumes:
     persistent:
